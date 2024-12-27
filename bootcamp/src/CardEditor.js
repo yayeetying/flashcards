@@ -8,6 +8,16 @@ class CardEditor extends React.Component {
         this.state = {front: '', back: ''};
     }
 
+    addCard = () => {
+        // this.state is a "card" in App.js 'cuz it has the same format as the other cards
+        this.props.addCard(this.state);
+        this.setState({front: '', back: ''});
+    }
+    
+    deleteCard = index => {
+        this.props.deleteCard(index);
+    }
+
     // Change this.state's front or back value in real-time as user types
     handleChange = event => 
         this.setState({ [event.target.name]: event.target.value })
@@ -19,7 +29,7 @@ class CardEditor extends React.Component {
                     <td>{card.front}</td>
                     <td>{card.back}</td>
                     <td>
-                        <button> Delete Card</button>
+                        <button onClick={() => this.deleteCard(index)}> Delete Card</button>
                     </td>
                 </tr>
             );
@@ -54,7 +64,7 @@ class CardEditor extends React.Component {
                     value={this.state.back}
                     onChange={this.handleChange}
                 />
-                <button>Add Card</button>
+                <button onClick={this.addCard}>Add Card</button>
             </div>
         );
     }
