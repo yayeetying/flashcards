@@ -65,6 +65,8 @@ class CardEditor extends React.Component {
                     onChange={this.handleChange}
                 />
                 <button onClick={this.addCard}>Add Card</button>
+                <hr/>
+                <button onClick={this.props.switchMode}>Go to Card Viewer</button>
             </div>
         );
     }

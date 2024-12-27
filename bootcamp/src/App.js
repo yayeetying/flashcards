@@ -1,5 +1,6 @@
 import React from 'react';
 import CardEditor from './CardEditor';
+import CardViewer from './CardViewer';
 
 class App extends React.Component{
   constructor(props) {
@@ -9,6 +10,7 @@ class App extends React.Component{
         {front: 'front1', back: 'back1'},
         {front: 'front2', back: 'back2'}
       ],
+      editor: true,
     };
   }
 
@@ -25,13 +27,27 @@ class App extends React.Component{
     this.setState({cards});
   }
 
+  switchMode = () => this.setState({editor: !this.state.editor});
+
   render() {
-    // addCard (the function) and cards are props sent to CardEditor
-    return <CardEditor 
-      addCard={this.addCard} 
-      deleteCard={this.deleteCard}
-      cards={this.state.cards}
-    />;
+    if (this.state.editor) {
+      return (
+        // addCard (the function) and cards are props sent to CardEditor
+        <CardEditor 
+          addCard={this.addCard} 
+          deleteCard={this.deleteCard}
+          cards={this.state.cards}
+          switchMode={this.switchMode}
+        />
+      );
+    }
+    else {
+      return (
+        <CardViewer 
+          switchMode={this.switchMode}
+        />
+      )
+    }
   }
 }
 
