@@ -9,9 +9,13 @@ class CardEditor extends React.Component {
     }
 
     addCard = () => {
-        // this.state is a "card" in App.js 'cuz it has the same format as the other cards
-        this.props.addCard(this.state);
-        this.setState({front: '', back: ''});
+        if (this.state.front.trim() == '' || this.state.back.trim() == '') {
+            alert("Yahoo!! Make sure the front and back of the card is filled out!")
+        }
+        else {
+            this.props.addCard(this.state);
+        }
+        this.setState({front: '', back: ''}); // Reset input boxes
     }
     
     deleteCard = index => {
@@ -19,8 +23,7 @@ class CardEditor extends React.Component {
     }
 
     // Change this.state's front or back value in real-time as user types
-    handleChange = event => 
-        this.setState({ [event.target.name]: event.target.value })
+    handleChange = event => this.setState({ [event.target.name]: event.target.value })
 
     render() {
         const cards = this.props.cards.map((card, index) => {
