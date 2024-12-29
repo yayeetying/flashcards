@@ -1,13 +1,14 @@
 import React from 'react';
 import CardEditor from './CardEditor';
 import CardViewer from './CardViewer';
+import Homepage from './Homepage';
+import {Switch, Route} from 'react-router-dom';
 
 class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      cards: [], // Empty set of cards for now
-      editor: true,
+      cards: [] // Empty set of cards for now
     };
   }
 
@@ -24,28 +25,26 @@ class App extends React.Component{
     this.setState({cards});
   }
 
-  switchMode = () => this.setState({editor: !this.state.editor});
-
   render() {
-    if (this.state.editor) {
-      return (
-        // addCard (the function) and cards are props sent to CardEditor
-        <CardEditor 
-          addCard={this.addCard} 
-          deleteCard={this.deleteCard}
-          cards={this.state.cards}
-          switchMode={this.switchMode}
-        />
-      );
-    }
-    else {
-      return (
-        <CardViewer 
-          cards={this.state.cards}
-          switchMode={this.switchMode}
-        />
-      )
-    }
+    return(
+      <Switch>
+        <Route exact path='/'>
+          <Homepage/>
+        </Route>
+        <Route exact path='/editor'>
+          <CardEditor 
+            addCard={this.addCard} 
+            deleteCard={this.deleteCard}
+            cards={this.state.cards}
+          />
+        </Route>
+        <Route exact path='/viewer'>
+          <CardViewer 
+            cards={this.state.cards}
+          />
+        </Route>
+      </Switch>
+    )
   }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import './CardEditor.css';
+import {Link} from 'react-router-dom';
 
 class CardEditor extends React.Component {
     // Define state to be passed to Parent cards Component in App.js
@@ -9,7 +10,7 @@ class CardEditor extends React.Component {
     }
 
     addCard = () => {
-        if (this.state.front.trim() == '' || this.state.back.trim() == '') {
+        if (this.state.front.trim() === '' || this.state.back.trim() === '') {
             alert("Yahoo!! Make sure the front and back of the card is filled out!")
         }
         else {
@@ -69,7 +70,7 @@ class CardEditor extends React.Component {
                 />
                 <button onClick={this.addCard}>Add Card</button>
                 <hr/>
-                <button onClick={this.props.switchMode}>Go to Card Viewer</button>
+                <Link to='/viewer'>Go to Card Viewer</Link>
             </div>
         );
     }
