@@ -1,6 +1,10 @@
 import React from "react";
 import './CardViewer.css';
-import {Link} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+
+import { firebaseConnect, isLoaded, isEmpty } from "react-redux-firebase";
+import { connect } from 'react-redux';
+import { compose } from "redux";
 
 class CardViewer extends React.Component {
     constructor(props) {
@@ -36,26 +40,23 @@ class CardViewer extends React.Component {
     };
 
     render() {
-        const { cards} = this.props;
+        if (!isLoaded(this.props.cards)){
+            return <div>Loading...</div>
+        }
+
+        if (isEmpty(this.props.cards)){
+            return <div>Page Not Found</div>
+        }
+
+        const { cards, name } = this.props;
         const { currentCardIndex, cardSide } = this.state;
         const currentCard = cards[currentCardIndex];
 
-        if (this.props.cards.length <= 0){
-            return (
-                <div>
-                    <h2>Card Viewer</h2>
-                    <h4> Go add some cards first though...</h4>
-                    <hr/>
-                    <Link to='/editor'>Go to Card Editor</Link>
-                </div>
-            );
-        }
-
         return (
             <div>
-                <h2>Card Viewer</h2>
+                <h2>{name}</h2>
                 <hr/>
-                <div class='prettycenter'>
+                <div className='prettycenter'>
                     <h4>Progress</h4>
                     Card {currentCardIndex+1} / {cards.length}
                 </div> <br/>
@@ -66,10 +67,28 @@ class CardViewer extends React.Component {
                 <button onClick={this.handlePreviousCard}>Previous</button>
                 <button onClick={this.handleNextCard}>Next</button>
                 <br/><br/>
-                <Link to='/editor'>Go to Card Editor</Link>
+                <Link to='/'>Homepage</Link>
             </div>
         );
     }
 }
 
-export default CardViewer;
+const mapStatetoProp = (state, props) => {
+    const deck = state.firebase.data[props.match.params.deckID];
+    // Short-circuiting in boolean expressions
+    const name = deck && deck.name;
+    const cards = deck && deck.cards;
+    return {name: name, cards: cards};
+}
+
+// firebaseConnect: connects Firebase database with Redux global state
+// connect: connects a React component with with the Redux store
+export default compose(
+    withRouter,
+    firebaseConnect(props => {
+        const deckID = props.match.params.deckID;
+        return [{path:`/flashcards/${deckID}`, storeAs: deckID}];
+    }),
+    connect(mapStatetoProp)
+)(CardViewer);
+
