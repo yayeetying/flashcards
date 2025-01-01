@@ -6,9 +6,10 @@ class Homepage extends React.Component {
         return (
             <div>
                 <h2> Homepage to Flashcards </h2>
-                <hr/>
-                <Link to='/editor'>Go to Card Editor</Link>
-                <br/>
+                <hr/> <br />
+                <Link to='/editor'>Create a new card deck!</Link>
+                <br/> 
+                <h3> Flashcards </h3>
                 <Link to='/viewer'>Go to Card Viewer</Link>
             </div>
         );
